@@ -1,6 +1,6 @@
 import React from "react";
 
-const ListItem = () => {
+const AddItem = () => {
     return (
         <form className="item-add-form d-flex">
             <input
@@ -15,4 +15,4 @@ const ListItem = () => {
     );
 };
 
-export default ListItem;
+export default AddItem;
