@@ -3,73 +3,83 @@ import ListItem from "./ListItem";
 
 const List = () => {
     // список задач
-    // оно должно быть как состояние
     const initionData = [
         { id: 1, title: "To do app", done: true, important: true },
         { id: 2, title: "To drink coffee", done: false, important: false },
         { id: 3, title: "To wash car", done: false, important: true },
     ];
-
     // по умолчанию
     // state = [];
     // хук (запушить новое значение массив задач)
     // диструктизация задачи в tasks а функцию в setTasks
+    // состояние должно быть по конкретной задачи
+    // в ListItem тогда по 1 конкретной задачи
+    // в list по всем задачам
+
     let [tasks, setTasks] = useState(initionData);
 
-    // стили
-    const style = { color: "black", fontWeight: "normal" };
-
-    const clickHandler = (id) => {
+    const changeImportantHandler = (id) => {
         // возвращает индекс элемента из массива tasks на который нажали
         const ind = tasks.findIndex((item) => {
             return item.id == id;
         });
 
+        //                  spread operator
         // копия массива
         let newTasks = [...tasks];
         // вносим изменения при клике
         newTasks[ind].important = !newTasks[ind].important;
-        // отправляем но обработку в виртуальный DOM
+        // отправляем на обработку с отрисовкой в виртуальный DOM
+        setTasks(newTasks);
+
+        //                      map
+        // let newTasks = tasks.map((item) => {
+        //     return item;
+        // });
+        // newTasks[ind].important = !newTasks[ind].important;
+        // setTasks(newTasks);
+
+        //                 КОНКАТИНАЦИЯ
+        // let newTasks = [].concat(tasks);
+        // newTasks[ind].important = !newTasks[ind].important;
+        // setTasks(newTasks);
+    };
+
+    const changeDoneHandler = (id) => {
+        const ind = tasks.findIndex((item) => {
+            return item.id == id;
+        });
+
+        let newTasks = [...tasks];
+        newTasks[ind].done = !newTasks[ind].done;
         setTasks(newTasks);
     };
 
-    /* arr.map(name => ()) - делаем с () а не с {} */
-    /* {} - делают логику, () - возвращают JSX  */
-    /* желательно делать не в return  */
+    const deleteItemHandler = (id) => {
+        const ind = tasks.findIndex((item) => {
+            return item.id == id;
+        });
+
+        let newTasks = [...tasks];
+        newTasks.splice(ind, 1);
+        setTasks(newTasks);
+    };
+
     const items = tasks.map((item) => (
         // каждый однотипный элемент должен индексироваться key=
-        <li key={item.id} className="list-group-item">
-            <span
-                className={`
-        todo-list-item 
-        ${item.important ? "important" : ""} 
-        ${item.done ? "done" : ""}`}
-            >
-                <span className="todo-list-item-label">{item.title}</span>
-                <button
-                    onClick={() => clickHandler(item.id)}
-                    type="button"
-                    className="btn btn-outline-success btn-sm float-end"
-                >
-                    <i className="fa fa-exclamation"></i>
-                </button>
-                <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm float-end"
-                >
-                    <i className="fa fa-trash"></i>
-                </button>
-            </span>
-        </li>
-        // <ListItem item={item} key={item.id} />
+        <ListItem
+            key={item.id}
+            item={item}
+            // onDeleteItem={(id) => deleteItemHandler(id)}
+            onDeleteItem={deleteItemHandler}
+            // onChangeDone={(id) => changeDoneHandler(id)}
+            onChangeDone={changeDoneHandler}
+            // onChangeImportant={(id) => changeImportantHandler(id)}
+            onChangeImportant={changeImportantHandler}
+        />
     ));
 
-    return (
-        <ul className="list-group todo-list">
-            {/* нельзя использовать foreach вывод через map */}
-            {items}
-        </ul>
-    );
+    return <ul className="list-group todo-list">{items}</ul>;
 };
 
 export default List;
