@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 // что-бы неписать props.item.id ...
 // props = по умолчанию пустой [], если нечего не передано

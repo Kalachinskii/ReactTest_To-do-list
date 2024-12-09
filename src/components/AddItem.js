@@ -8,7 +8,7 @@ const AddItem = () => {
                 className="form-control"
                 placeholder="What needs to be done"
             />
-            <button className="btn btn-outline-secondary col-3">
+            <button type="submit" className="btn btn-outline-secondary col-3">
                 Add Item
             </button>
         </form>
