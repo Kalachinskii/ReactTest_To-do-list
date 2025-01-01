@@ -13,21 +13,24 @@ const App = () => {
     const initionData = [
         { id: 1, title: "To do app", done: true, important: true },
         { id: 2, title: "To drink coffee", done: false, important: false },
-        { id: 3, title: "To wash car", done: false, important: true },
+        { id: 3, title: "To wash car", done: true, important: true },
     ];
-    // по умолчанию
-    // state = [];
-    // хук (запушить новое значение массив задач)
-    // диструктизация задачи в tasks а функцию в setTasks
-    // состояние должно быть по конкретной задачи
-    // в ListItem тогда по 1 конкретной задачи
-    // в list по всем задачам
 
-    let [tasks, setTasks] = useState(initionData);
-    // кол-во выполненых задач 0 (0 - неактуально)
-    // done не только работает в связи но и зависит другая информация
+    /*
+    по умолчанию
+    state = [];
+    хук (запушить новое значение массив задач)
+    диструктизация задачи в tasks а функцию в setTasks
+    состояние должно быть по конкретной задачи
+    в ListItem тогда по 1 конкретной задачи
+    в list по всем задачам
+*/
+
+    const [tasks, setTasks] = useState(initionData);
+
+    /*                          неактуально
+    done не только работает в связи но и зависит другая информация
     const [done, setDone] = useState(0);
-
     const getTaskHendler = (tasks) => {
         //                      .filter
         // фильтруем массив по done=true - остальное выбрасываем
@@ -40,17 +43,18 @@ const App = () => {
         setDone(count);
         return count;
     };
-
-    // Эффект для обновления состояния при загрузке страницы
+    Эффект для обновления состояния при загрузке страницы
     useEffect(() => {
         const count = getTaskHendler(tasks);
         setDone(count); // Обновляем состояние
-    }, []); // Пустой массив зависимостей, выполнить эффект только один раз при загрузке
+     }, []); // Пустой массив зависимостей, выполнить эффект только один раз при загрузке
+    */
 
+    // Important
     const changeImportantHandler = (id) => {
         // возвращает индекс элемента из массива tasks на который нажали
         const ind = tasks.findIndex((item) => {
-            return item.id == id;
+            return item.id === id;
         });
 
         //                  spread operator
@@ -74,33 +78,40 @@ const App = () => {
         // setTasks(newTasks);
     };
 
+    // Done
     const changeDoneHandler = (id) => {
         const ind = tasks.findIndex((item) => {
-            return item.id == id;
+            return item.id === id;
         });
 
         let newTasks = [...tasks];
         newTasks[ind].done = !newTasks[ind].done;
         // выполнить(зачеркнуть)/отменить задачу
         setTasks(newTasks);
-        // изменить кол-во выполненых задач
-        getTaskHendler(tasks);
     };
 
+    // delete
     const deleteItemHandler = (id) => {
         const ind = tasks.findIndex((item) => {
-            return item.id == id;
+            return item.id === id;
         });
 
         let newTasks = [...tasks];
         newTasks.splice(ind, 1);
         setTasks(newTasks);
-        // setDone(2);
     };
+
+    // изменения происходит по всему коду где задействованы tasks при
+    // изменении в setTasks т.о. изменения в tasks происходят и в детях
+    const done = tasks.reduce((count, item) => {
+        return count + (item.done ? 1 : 0);
+    }, 0);
+
+    const todo = tasks.length - done;
 
     return (
         <div className="todo-app">
-            <Header todo={3} done={done} />
+            <Header todo={todo} done={done} />
             <Search />
             <List
                 getTask={tasks}
