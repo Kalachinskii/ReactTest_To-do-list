@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
-const AddItem = () => {
+const AddItem = ({ onAdd }) => {
+    const [value, setValue] = useState("");
+
     return (
-        <form className="item-add-form d-flex">
+        // без БД меняем форму на див -перезагрузка -превентдефолт
+        <div className="item-add-form d-flex">
+            {/* // контролируемый инпут */}
             <input
+                onChange={(e) => setValue(e.target.value)}
+                if="addTitle"
                 type="text"
                 className="form-control"
                 placeholder="What needs to be done"
+                value={value}
             />
-            <button type="submit" className="btn btn-outline-secondary col-3">
+            <button
+                onClick={() => onAdd(value)}
+                // type="submit"
+                className="btn btn-outline-secondary col-3"
+            >
                 Add Item
             </button>
-        </form>
+        </div>
     );
 };
 

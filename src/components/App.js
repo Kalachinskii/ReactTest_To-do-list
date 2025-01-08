@@ -101,6 +101,19 @@ const App = () => {
         setTasks(newTasks);
     };
 
+    const addHandler = (title) => {
+        const id = tasks[tasks.length - 1].id + 1;
+        const newTask = {
+            id: id,
+            title: title,
+            done: false,
+            important: false,
+        };
+        const newTasks = [...tasks, newTask];
+        // newTasks.push(newTask);
+        setTasks(newTasks);
+    };
+
     // изменения происходит по всему коду где задействованы tasks при
     // изменении в setTasks т.о. изменения в tasks происходят и в детях
     const done = tasks.reduce((count, item) => {
@@ -119,7 +132,7 @@ const App = () => {
                 onImportant={changeImportantHandler}
                 onDone={changeDoneHandler}
             />
-            <AddItem />
+            <AddItem onAdd={addHandler} />
         </div>
     );
 };
