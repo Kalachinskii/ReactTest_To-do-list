@@ -1,8 +1,8 @@
 import React from "react";
 import ListItem from "./ListItem";
 
-const List = ({ getTask, onDeleteItem, onDone, onImportant }) => {
-    const items = getTask.map((item) => (
+const List = ({ tasks, onDeleteItem, onDone, onImportant }) => {
+    const items = tasks.map((item) => (
         // каждый однотипный элемент должен индексироваться key=
         <ListItem
             key={item.id}

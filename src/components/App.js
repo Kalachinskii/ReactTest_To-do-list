@@ -1,11 +1,12 @@
 // корень приложения - все то что будет в приложении
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState } from "react";
+// import ReactDOM from "react-dom/client";
 // подключаемые компаненты
 import Header from "./Header";
 import Search from "./Search";
 import List from "./List";
 import AddItem from "./AddItem";
+import Filter from "./Filter";
 
 // точка сбора компонентов и библиотек
 const App = () => {
@@ -27,7 +28,7 @@ const App = () => {
 */
 
     const [tasks, setTasks] = useState(initionData);
-
+    const [filter, setFilter] = useState(0);
     /*                          неактуально
     done не только работает в связи но и зависит другая информация
     const [done, setDone] = useState(0);
@@ -114,6 +115,30 @@ const App = () => {
         setTasks(newTasks);
     };
 
+    const filterHendler = (type = 0) => {
+        let newTasks, filteredTasks;
+        switch (type) {
+            case 0:
+                return tasks;
+            case 1:
+                newTasks = [...tasks];
+                filteredTasks = newTasks.filter((el) => {
+                    return el.done === false;
+                });
+                return filteredTasks;
+            case 2:
+                newTasks = [...tasks];
+                filteredTasks = newTasks.filter((el) => {
+                    return el.done === true;
+                });
+                return filteredTasks;
+            default:
+                break;
+        }
+    };
+
+    const filteredTasks = filterHendler(filter);
+
     // изменения происходит по всему коду где задействованы tasks при
     // изменении в setTasks т.о. изменения в tasks происходят и в детях
     const done = tasks.reduce((count, item) => {
@@ -125,9 +150,16 @@ const App = () => {
     return (
         <div className="todo-app">
             <Header todo={todo} done={done} />
-            <Search />
+            <div className="top-panel d-flex">
+                <Search />
+                <Filter
+                    onFilter={(type) => {
+                        setFilter(type);
+                    }}
+                />
+            </div>
             <List
-                getTask={tasks}
+                tasks={filteredTasks}
                 onDeleteItem={deleteItemHandler}
                 onImportant={changeImportantHandler}
                 onDone={changeDoneHandler}
