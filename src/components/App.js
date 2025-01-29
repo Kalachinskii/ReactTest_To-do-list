@@ -151,7 +151,11 @@ const App = () => {
         <div className="todo-app">
             <Header todo={todo} done={done} />
             <div className="top-panel d-flex">
-                <Search />
+                <Search
+                    onSearch={(type) => {
+                        setFilter(type);
+                    }}
+                />
                 <Filter
                     onFilter={(type) => {
                         setFilter(type);
