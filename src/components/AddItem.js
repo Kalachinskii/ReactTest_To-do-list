@@ -16,7 +16,10 @@ const AddItem = ({ onAdd }) => {
                 value={value}
             />
             <button
-                onClick={() => onAdd(value)}
+                onClick={() => {
+                    onAdd(value);
+                    setValue("");
+                }}
                 // type="submit"
                 className="btn btn-outline-secondary col-3"
             >

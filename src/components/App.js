@@ -115,21 +115,35 @@ const App = () => {
         setTasks(newTasks);
     };
 
-    const filterHendler = (type = 0) => {
-        let newTasks, filteredTasks;
+    const filterHendler = (type = 0, value = "") => {
+        let filteredTasks;
+
         switch (type) {
             case 0:
-                return tasks;
+                filteredTasks = tasks.filter((el) => {
+                    return el.title
+                        .toLocaleLowerCase()
+                        .includes(value.toLowerCase());
+                });
+                return filteredTasks;
             case 1:
-                newTasks = [...tasks];
-                filteredTasks = newTasks.filter((el) => {
-                    return el.done === false;
+                filteredTasks = tasks.filter((el) => {
+                    return (
+                        el.done === false &&
+                        el.title
+                            .toLocaleLowerCase()
+                            .includes(value.toLowerCase())
+                    );
                 });
                 return filteredTasks;
             case 2:
-                newTasks = [...tasks];
-                filteredTasks = newTasks.filter((el) => {
-                    return el.done === true;
+                filteredTasks = tasks.filter((el) => {
+                    return (
+                        el.done === true &&
+                        el.title
+                            .toLocaleLowerCase()
+                            .includes(value.toLowerCase())
+                    );
                 });
                 return filteredTasks;
             default:
@@ -137,7 +151,9 @@ const App = () => {
         }
     };
 
-    const filteredTasks = filterHendler(filter);
+    const [value, setValue] = useState("");
+    // запуск filterHendler при старте страницы
+    const filteredTasks = filterHendler(filter, value);
 
     // изменения происходит по всему коду где задействованы tasks при
     // изменении в setTasks т.о. изменения в tasks происходят и в детях
@@ -152,8 +168,8 @@ const App = () => {
             <Header todo={todo} done={done} />
             <div className="top-panel d-flex">
                 <Search
-                    onSearch={(type) => {
-                        setFilter(type);
+                    onSearch={(value) => {
+                        setValue(value);
                     }}
                 />
                 <Filter
