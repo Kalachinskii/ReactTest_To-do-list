@@ -45,5 +45,4 @@
 - **Язык:** JavaScript (ES6+)
 - **Разметка:** HTML5
 - **Стилизация:** CSS3
-- **Хранение данных:** Local Storage API
 - **Деплой:** GitHub Pages
